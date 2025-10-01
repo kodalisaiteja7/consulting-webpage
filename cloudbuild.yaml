@@ -37,7 +37,7 @@ steps:
       - 'managed'
       - '--allow-unauthenticated'
       - '--set-env-vars'
-      - 'NODE_ENV=production,PORT=8080'
+      - 'NODE_ENV=production'
     waitFor: ['push-backend']
 
   # Deploy Frontend to Cloud Run
