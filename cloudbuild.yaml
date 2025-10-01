@@ -37,7 +37,7 @@ steps:
       - 'managed'
       - '--allow-unauthenticated'
       - '--set-env-vars'
-      - 'NODE_ENV=production'
+      - 'NODE_ENV=production,MONGO_URI=mongodb+srv://teja:teja123@cluster0.mongodb.net/consulting_site?retryWrites=true&w=majority'
     waitFor: ['push-backend']
 
   # Deploy Frontend to Cloud Run
