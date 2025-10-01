@@ -104,7 +104,6 @@ Thumbs.db
 
 # Docker
 .dockerignore
-Dockerfile*
 
 # Vercel
 .vercel

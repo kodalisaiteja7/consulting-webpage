@@ -1,0 +1,10 @@
+name: consulting-webpage-custom
+description: Custom build trigger for consulting website with proper Dockerfile paths
+github:
+  owner: kodalisaiteja7
+  name: consulting-webpage
+  push:
+    branch: ^main$
+filename: cloudbuild.yaml
+substitutions:
+  _PROJECT_ID: feisty-current-471604-m4
