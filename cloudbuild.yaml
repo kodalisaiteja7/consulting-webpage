@@ -1,0 +1,84 @@
+steps:
+  # Build Backend Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-backend'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/consulting-backend:$COMMIT_SHA', '-f', './backend/Dockerfile', './backend']
+
+  # Build Frontend Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-frontend'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/consulting-frontend:$COMMIT_SHA', '-f', './frontend/Dockerfile', './frontend']
+
+  # Push Backend Docker image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-backend'
+    args: ['push', 'gcr.io/$PROJECT_ID/consulting-backend:$COMMIT_SHA']
+    waitFor: ['build-backend']
+
+  # Push Frontend Docker image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-frontend'
+    args: ['push', 'gcr.io/$PROJECT_ID/consulting-frontend:$COMMIT_SHA']
+    waitFor: ['build-frontend']
+
+  # Deploy Backend to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'deploy-backend'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'consulting-backend'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/consulting-backend:$COMMIT_SHA'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--set-env-vars'
+      - 'NODE_ENV=production,PORT=8080'
+    waitFor: ['push-backend']
+
+  # Deploy Frontend to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'deploy-frontend'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'consulting-frontend'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/consulting-frontend:$COMMIT_SHA'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--port'
+      - '80'
+    waitFor: ['push-frontend']
+
+  # Get frontend URL and update CORS settings for backend
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'update-cors'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        FRONTEND_URL=$$(gcloud run services describe consulting-frontend --region us-central1 --format 'value(status.url)')
+        echo "Frontend URL: $$FRONTEND_URL"
+        gcloud run services update consulting-backend \
+          --region us-central1 \
+          --set-env-vars "CORS_ORIGIN=$$FRONTEND_URL"
+    waitFor: ['deploy-backend', 'deploy-frontend']
+
+# Define the images to be built
+images:
+  - 'gcr.io/$PROJECT_ID/consulting-backend:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/consulting-frontend:$COMMIT_SHA'
+
+# Build options
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: 'E2_HIGHCPU_8'
