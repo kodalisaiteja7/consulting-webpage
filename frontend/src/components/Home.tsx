@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 export default function Home() {
-	const [activeSection, setActiveSection] = useState('hero');
+	const [, setActiveSection] = useState('hero');
 	const heroRef = useRef<HTMLElement>(null);
 	const aboutRef = useRef<HTMLElement>(null);
 	const servicesRef = useRef<HTMLElement>(null);

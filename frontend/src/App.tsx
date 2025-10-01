@@ -1,6 +1,6 @@
-import { Suspense, useEffect, useState, useRef } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import './index.css';
 import Home from './components/Home';
 import Footer from './components/Footer';
@@ -35,7 +35,7 @@ const Page = ({ children }: { children: React.ReactNode }) => (
 
 function Navigation() {
 	const location = useLocation();
-	const [activeSection, setActiveSection] = useState('hero');
+	const [activeSection] = useState('hero');
 	
 	// Only show scroll-based navigation on home page
 	if (location.pathname !== '/') {

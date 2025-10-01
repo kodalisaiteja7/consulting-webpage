@@ -92,7 +92,7 @@ function ApplyModal({ open, onClose, job }: { open: boolean; onClose: () => void
 export default function JobsPage() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [jobs, setJobs] = useState<Job[]>([]);
-	const [total, setTotal] = useState(0);
+	const [, setTotal] = useState(0);
 	const [loading, setLoading] = useState(true);
 	const [modalOpen, setModalOpen] = useState(false);
 	const [selectedJob, setSelectedJob] = useState<Job | undefined>(undefined);
