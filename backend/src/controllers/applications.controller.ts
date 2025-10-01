@@ -11,7 +11,7 @@ export async function createApplication(req: Request, res: Response) {
 	if (!job) return res.status(404).json({ success: false, message: 'Job not found' });
 
 	const resumeUrl = (req as any).fileUrl as string | undefined;
-	const appDoc = await Application.create({
+	const appDoc = await (Application as any).create({
 		job: job._id,
 		name: req.body.name,
 		email: req.body.email,
@@ -23,6 +23,6 @@ export async function createApplication(req: Request, res: Response) {
 }
 
 export async function listApplications(req: Request, res: Response) {
-	const apps = await Application.find({}).sort({ createdAt: -1 }).limit(200);
+	const apps = await (Application as any).find({}).sort({ createdAt: -1 }).limit(200);
 	res.json({ success: true, data: apps });
 }
