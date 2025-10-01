@@ -8,8 +8,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "start": "node dist/index.js",
     "seed": "ts-node src/scripts/seed.ts",
-    "lint": "echo 'add linter later'",
-    "heroku-postbuild": "npm run build"
+    "lint": "echo 'add linter later'"
   },
   "keywords": [],
   "author": "",
