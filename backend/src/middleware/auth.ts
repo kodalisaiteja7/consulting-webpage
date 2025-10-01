@@ -5,7 +5,8 @@ import { env } from '../config/env';
 export type JwtPayload = { sub: string; role: 'admin' };
 
 export function signAdminToken(adminId: string) {
-	return jwt.sign({ sub: adminId, role: 'admin' } as JwtPayload, env.jwtSecret, { expiresIn: env.jwtExpiresIn });
+	const payload: JwtPayload = { sub: adminId, role: 'admin' };
+	return jwt.sign(payload, env.jwtSecret, { expiresIn: env.jwtExpiresIn });
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
