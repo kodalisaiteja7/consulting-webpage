@@ -6,7 +6,7 @@ export type JwtPayload = { sub: string; role: 'admin' };
 
 export function signAdminToken(adminId: string) {
 	const payload: JwtPayload = { sub: adminId, role: 'admin' };
-	return jwt.sign(payload, env.jwtSecret, { expiresIn: env.jwtExpiresIn });
+	return jwt.sign(payload, env.jwtSecret, { expiresIn: env.jwtExpiresIn as string });
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
