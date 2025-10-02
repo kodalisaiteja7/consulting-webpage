@@ -5,7 +5,17 @@ import { validationResult } from 'express-validator';
 export async function listJobs(req: Request, res: Response) {
 	const { q, type, location, department, experienceLevel, page = '1', limit = '12' } = req.query as any;
 	const filter: any = { active: true };
-	if (q) filter.$text = { $search: q };
+	
+	// Search across title, description, and requirements using regex
+	if (q) {
+		filter.$or = [
+			{ _title: { $regex: q, $options: 'i' } },
+			{ description: { $regex: q, $options: 'i' } },
+			{ requirements: { $elemMatch: { $regex: q, $options: 'i' } } },
+			{ department: { $regex: q, $options: 'i' } }
+		];
+	}
+	
 	if (type) filter.type = type;
 	if (location) filter.location = { $regex: location, $options: 'i' }; // Case-insensitive partial match
 	if (department) filter.department = department;
