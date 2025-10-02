@@ -144,6 +144,7 @@ export default function JobsPage() {
 	return (
 		<div className="mx-auto max-w-7xl px-6 py-12">
 			<h1 className="text-3xl font-bold tracking-tight">Open Roles</h1>
+			{/* Force rebuild - filters should work now */}
 			<div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-4">
 				<input placeholder="Search jobs" className="rounded-md border border-slate-300 px-3 py-2 dark:border-slate-700 dark:bg-slate-950" value={params.search || ''} onChange={(e) => updateParam('search', e.target.value)} />
 				<select className="rounded-md border border-slate-300 px-3 py-2 dark:border-slate-700 dark:bg-slate-950" value={params.type || ''} onChange={(e) => updateParam('type', e.target.value)}>
