@@ -9,18 +9,15 @@ export default api;
 
 export type Job = {
 	_id: string;
-	title: string;
+	_title: string;
+	slug: string;
 	description: string;
 	requirements: string[];
-	responsibilities: string[];
 	location: string;
 	department: string;
-	experience: 'Junior' | 'Mid-level' | 'Senior';
-	type: 'Full-time' | 'Part-time' | 'Contract' | 'Internship';
-	salary: string;
-	benefits: string[];
-	applicationDeadline: string;
-	isActive: boolean;
+	experienceLevel: 'junior' | 'mid' | 'senior' | 'lead';
+	type: 'full-time' | 'part-time' | 'contract' | 'internship' | 'remote';
+	active: boolean;
 	createdAt: string;
 	updatedAt: string;
 };

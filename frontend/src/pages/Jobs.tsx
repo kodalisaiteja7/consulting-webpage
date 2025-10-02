@@ -18,6 +18,17 @@ const applySchema = z.object({
 type ApplyValues = z.infer<typeof applySchema>;
 
 function JobCard({ job, onApply }: { job: Job; onApply: (job: Job) => void }) {
+	// Helper function to capitalize and format enum values
+	const formatValue = (value: string) => {
+		if (value === 'mid') return 'Mid-level';
+		if (value === 'full-time') return 'Full-time';
+		if (value === 'part-time') return 'Part-time';
+		if (value === 'contract') return 'Contract';
+		if (value === 'internship') return 'Internship';
+		if (value === 'remote') return 'Remote';
+		return value.charAt(0).toUpperCase() + value.slice(1);
+	};
+
 	return (
 		<motion.div
 			layout
@@ -26,12 +37,12 @@ function JobCard({ job, onApply }: { job: Job; onApply: (job: Job) => void }) {
 			exit={{ opacity: 0, y: -16 }}
 			className="rounded-xl border border-slate-200/70 bg-white p-6 shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
 		>
-			<h3 className="text-xl font-semibold">{job.title}</h3>
+			<h3 className="text-xl font-semibold">{job._title}</h3>
 			<p className="mt-2 line-clamp-3 text-sm text-slate-600 dark:text-slate-300">{job.description}</p>
 			<div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-500">
-				<span className="rounded-full border border-slate-200 px-2 py-1 dark:border-slate-700">{job.type}</span>
+				<span className="rounded-full border border-slate-200 px-2 py-1 dark:border-slate-700">{formatValue(job.type)}</span>
 				<span className="rounded-full border border-slate-200 px-2 py-1 dark:border-slate-700">{job.location}</span>
-				<span className="rounded-full border border-slate-200 px-2 py-1 dark:border-slate-700">{job.experience}</span>
+				<span className="rounded-full border border-slate-200 px-2 py-1 dark:border-slate-700">{formatValue(job.experienceLevel)}</span>
 				<span className="rounded-full border border-slate-200 px-2 py-1 dark:border-slate-700">{job.department}</span>
 			</div>
 			<div className="mt-6">
@@ -48,7 +59,7 @@ function ApplyModal({ open, onClose, job }: { open: boolean; onClose: () => void
 	return (
 		<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4">
 			<motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -10, opacity: 0 }} className="w-full max-w-lg rounded-xl border border-slate-200 bg-white p-6 shadow-xl dark:border-slate-800 dark:bg-slate-900">
-				<h3 className="text-xl font-semibold">Apply for {job.title}</h3>
+				<h3 className="text-xl font-semibold">Apply for {job._title}</h3>
 				<form
 					onSubmit={handleSubmit(async (values) => {
 						await submitApplication({
