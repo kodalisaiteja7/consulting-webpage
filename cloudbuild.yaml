@@ -61,18 +61,19 @@ steps:
       - '80'
     waitFor: ['push-frontend']
 
-  # Get frontend URL and update CORS settings for backend
+  # Update CORS settings for backend with correct frontend URL
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'update-cors'
-    entrypoint: 'bash'
+    entrypoint: 'gcloud'
     args:
-      - '-c'
-      - |
-        FRONTEND_URL=$$(gcloud run services describe consulting-frontend --region us-central1 --format 'value(status.url)')
-        echo "Frontend URL: $$FRONTEND_URL"
-        gcloud run services update consulting-backend \
-          --region us-central1 \
-          --set-env-vars "MONGO_URI=mongodb+srv://consulting_user:Kodali%40123@cluster1.nagrepw.mongodb.net/consulting_site?retryWrites=true&w=majority&appName=Cluster1,CORS_ORIGIN=$$FRONTEND_URL"
+      - 'run'
+      - 'services'
+      - 'update'
+      - 'consulting-backend'
+      - '--region'
+      - 'us-central1'
+      - '--set-env-vars'
+      - 'MONGO_URI=mongodb+srv://consulting_user:Kodali%40123@cluster1.nagrepw.mongodb.net/consulting_site?retryWrites=true&w=majority&appName=Cluster1,CORS_ORIGIN=https://consulting-frontend-537779248918.us-central1.run.app'
     waitFor: ['deploy-backend', 'deploy-frontend']
 
 # Define the images to be built
