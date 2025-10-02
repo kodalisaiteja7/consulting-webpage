@@ -104,7 +104,7 @@ export default function JobsPage() {
 			try {
 				const response = await fetchJobs(params);
 				setJobs(response.data || []);
-				setTotal(response.count || 0);
+				setTotal(response.meta?.total || 0);
 			} catch (error) {
 				console.error('Error fetching jobs:', error);
 				setJobs([]);
