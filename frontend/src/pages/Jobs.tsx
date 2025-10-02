@@ -102,7 +102,14 @@ export default function JobsPage() {
 		const loadJobs = async () => {
 			setLoading(true);
 			try {
-				const response = await fetchJobs(params);
+				// Transform frontend params to backend expected params
+				const backendParams: any = {};
+				if (params.search) backendParams.q = params.search;
+				if (params.type) backendParams.type = params.type;
+				if (params.location) backendParams.location = params.location;
+				if (params.experience) backendParams.experienceLevel = params.experience;
+				
+				const response = await fetchJobs(backendParams);
 				setJobs(response.data || []);
 				setTotal(response.meta?.total || 0);
 			} catch (error) {
@@ -130,17 +137,19 @@ export default function JobsPage() {
 				<input placeholder="Search jobs" className="rounded-md border border-slate-300 px-3 py-2 dark:border-slate-700 dark:bg-slate-950" value={params.search || ''} onChange={(e) => updateParam('search', e.target.value)} />
 				<select className="rounded-md border border-slate-300 px-3 py-2 dark:border-slate-700 dark:bg-slate-950" value={params.type || ''} onChange={(e) => updateParam('type', e.target.value)}>
 					<option value="">Any type</option>
-					<option value="Full-time">Full-time</option>
-					<option value="Part-time">Part-time</option>
-					<option value="Contract">Contract</option>
-					<option value="Internship">Internship</option>
+					<option value="full-time">Full-time</option>
+					<option value="part-time">Part-time</option>
+					<option value="contract">Contract</option>
+					<option value="internship">Internship</option>
+					<option value="remote">Remote</option>
 				</select>
 				<input placeholder="Location" className="rounded-md border border-slate-300 px-3 py-2 dark:border-slate-700 dark:bg-slate-950" value={params.location || ''} onChange={(e) => updateParam('location', e.target.value)} />
 				<select className="rounded-md border border-slate-300 px-3 py-2 dark:border-slate-700 dark:bg-slate-950" value={params.experience || ''} onChange={(e) => updateParam('experience', e.target.value)}>
 					<option value="">Any level</option>
-					<option value="Junior">Junior</option>
-					<option value="Mid-level">Mid-level</option>
-					<option value="Senior">Senior</option>
+					<option value="junior">Junior</option>
+					<option value="mid">Mid-level</option>
+					<option value="senior">Senior</option>
+					<option value="lead">Lead</option>
 				</select>
 			</div>
 			<div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
