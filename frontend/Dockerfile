@@ -14,7 +14,7 @@ RUN npm ci
 COPY . .
 
 # Set environment variable for API URL
-ENV VITE_API_URL=https://consulting-backend-ljlh5jqwca-uc.a.run.app/api
+ENV VITE_API_URL=https://consulting-backend-537779248918.us-central1.run.app/api
 
 # Build the app
 RUN npm run build
