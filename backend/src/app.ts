@@ -18,7 +18,7 @@ const app = express();
 app.set('trust proxy', 1);
 
 app.use(cors({ 
-	origin: ['http://localhost:5173', 'http://localhost:5174'], 
+	origin: env.corsOrigin ? [env.corsOrigin, 'http://localhost:5173', 'http://localhost:5174'] : ['http://localhost:5173', 'http://localhost:5174'], 
 	credentials: true 
 }));
 app.use(helmet());
