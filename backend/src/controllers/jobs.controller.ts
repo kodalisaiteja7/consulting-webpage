@@ -7,7 +7,7 @@ export async function listJobs(req: Request, res: Response) {
 	const filter: any = { active: true };
 	if (q) filter.$text = { $search: q };
 	if (type) filter.type = type;
-	if (location) filter.location = location;
+	if (location) filter.location = { $regex: location, $options: 'i' }; // Case-insensitive partial match
 	if (department) filter.department = department;
 	if (experienceLevel) filter.experienceLevel = experienceLevel;
 
