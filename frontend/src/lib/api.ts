@@ -28,12 +28,12 @@ export type Job = {
 export type Paginated<T> = { success: boolean; data: T[]; meta: { total: number; page: number; limit: number } };
 
 export async function fetchJobs(params: Record<string, string | number | undefined>) {
-	const res = await api.get<{ success: boolean; data: Job[]; count: number }>('/mock/jobs', { params });
+	const res = await api.get<{ success: boolean; data: Job[]; meta: { total: number; page: number; limit: number } }>('/jobs', { params });
 	return res.data;
 }
 
 export async function fetchJobById(id: string) {
-	const res = await api.get<{ success: boolean; data: Job }>(`/mock/jobs/${id}`);
+	const res = await api.get<{ success: boolean; data: Job }>(`/jobs/${id}`);
 	return res.data;
 }
 
